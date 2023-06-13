@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <string>
 #include <cstring>
 
@@ -36,11 +37,10 @@ std::string	sed(std::string content, std::string s1, std::string s2) {
 	return result;
 }
 
-const char	*outputName(char *input) {
+std::string outputName(char *input) {
 	std::string	outputName = input;
 	outputName += ".replace";
-	const char* str = outputName.c_str();
-	return str;
+	return outputName;
 }
 
 int	main(int ac, char **av) {
@@ -50,18 +50,23 @@ int	main(int ac, char **av) {
 	}
 	std::ifstream	inputStream (av[1]);
 	if (inputStream.is_open()) {
-		std::ofstream	outputStream (outputName(av[1]));
-		std::string		s1 = av[2];
-		std::string		s2 = av[3];
-		std::string		content;
-		while (inputStream)
-		{
-			if (!std::getline(inputStream, content))
-				break;
-			outputStream << sed(content, s1, s2) << std::endl;
+		std::ofstream	outputStream(outputName(av[1]).c_str(), std::ios::out | std::ios::trunc);
+
+		if (outputStream.is_open()) {
+			std::string		s1 = av[2];
+			std::string		s2 = av[3];
+			std::string		content;
+			while (inputStream)
+			{
+				if (!std::getline(inputStream, content))
+					break;
+				outputStream << sed(content, s1, s2) << std::endl;
+			}
 		}
+		else
+			std::cout << "Couldn't open output file" << std::endl;
 	}
 	else
-		std::cout << "Couldn't open file\n";
+		std::cout << "Couldn't open input file" << std::endl;
 	return 0;
 }
