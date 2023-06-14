@@ -6,7 +6,7 @@
 /*   By: mjourno <mjourno@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 13:15:40 by mjourno           #+#    #+#             */
-/*   Updated: 2023/05/31 20:53:15 by mjourno          ###   ########.fr       */
+/*   Updated: 2023/06/14 18:58:59 by mjourno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,56 +17,50 @@
 #include <cstring>
 
 std::string	sed(std::string content, std::string s1, std::string s2) {
-	std::string	result = "";
-	for (long unsigned int i = 0; i < content.length(); i++)
-	{
-		if (content[i] == s1[0])
-		{
-			long unsigned int	j = 0;
-			while (content[i + j] == s1[j])
-				j++;
-			if (j == (s1.length()))
-			{
-				result += s2;
-				i += j - 1;
-				continue;
-			}
-		}
-		result += content[i];
-	}
-	return result;
-}
+	int	i = 0;
 
-std::string outputName(char *input) {
-	std::string	outputName = input;
-	outputName += ".replace";
-	return outputName;
+	while ((i = content.find(s1, i)) != -1) {
+		content.erase(i, s1.length());
+		content.insert(i, s2);
+		i += s2.length();
+	}
+	return content;
 }
 
 int	main(int ac, char **av) {
 	if (ac != 4) {
-		std::cout << "Need 3 parameters: filename, s1 and s2" << std::endl;
+		std::cerr << "Need 3 parameters: filename, s1 and s2" << std::endl;
 		return 1;
 	}
-	std::ifstream	inputStream (av[1]);
-	if (inputStream.is_open()) {
-		std::ofstream	outputStream(outputName(av[1]).c_str(), std::ios::out | std::ios::trunc);
 
-		if (outputStream.is_open()) {
-			std::string		s1 = av[2];
-			std::string		s2 = av[3];
-			std::string		content;
-			while (inputStream)
-			{
-				if (!std::getline(inputStream, content))
-					break;
-				outputStream << sed(content, s1, s2) << std::endl;
-			}
-		}
-		else
-			std::cout << "Couldn't open output file" << std::endl;
+	std::ifstream	inputStream(av[1]);
+	if (!inputStream.is_open()) {
+		std::cerr << "Couldn't open input file" << std::endl;
+		return 1;
 	}
-	else
-		std::cout << "Couldn't open input file" << std::endl;
+
+	std::string	outputName = av[1];
+	outputName += ".replace";
+	std::ofstream	outputStream(outputName.c_str(), std::ios::out | std::ios::trunc);
+	if (!outputStream.is_open()) {
+		std::cerr << "Couldn't open output file" << std::endl;
+		return 1;
+	}
+
+	std::string		s1 = av[2];
+	std::string		s2 = av[3];
+	if (s1.empty() || s2.empty()) {
+		std::cerr << "Empty strings" << std::endl;
+		return 1;
+	}
+
+	std::string		content;
+	while (inputStream)
+	{
+		if (!std::getline(inputStream, content))
+			break;
+		outputStream << sed(content, s1, s2) << std::endl;
+	}
+
 	return 0;
 }
