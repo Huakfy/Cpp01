@@ -6,15 +6,12 @@
 /*   By: mjourno <mjourno@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 13:15:40 by mjourno           #+#    #+#             */
-/*   Updated: 2023/06/14 18:58:59 by mjourno          ###   ########.fr       */
+/*   Updated: 2023/06/14 19:00:56 by mjourno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <fstream>
-#include <iomanip>
-#include <string>
-#include <cstring>
 
 std::string	sed(std::string content, std::string s1, std::string s2) {
 	int	i = 0;
