@@ -6,7 +6,7 @@
 /*   By: mjourno <mjourno@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 13:15:40 by mjourno           #+#    #+#             */
-/*   Updated: 2023/06/14 19:00:56 by mjourno          ###   ########.fr       */
+/*   Updated: 2023/06/15 16:36:31 by mjourno          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int ac, char **av) {
 
 	std::string		s1 = av[2];
 	std::string		s2 = av[3];
-	if (s1.empty() || s2.empty()) {
+	if (s1.empty()) {
 		std::cerr << "Empty strings" << std::endl;
 		return 1;
 	}
